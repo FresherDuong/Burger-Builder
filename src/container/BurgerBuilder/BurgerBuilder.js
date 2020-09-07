@@ -52,24 +52,39 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    // alert('Continue !');
-    // Endpoint firebase "/order" but need add .json to be correct
-    this.setState({ loading: true });
+    // // alert('Continue !');
+    // // Endpoint firebase "/order" but need add .json to be correct
+    // this.setState({ loading: true });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   total: this.state.totalPrice,
+    // };
+    // axios
+    //   .post('/order.json', order)
+    //   .then((res) => {
+    //     // console.log(res);
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch((err) => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
 
-    const order = {
-      ingredients: this.state.ingredients,
-      total: this.state.totalPrice,
-    };
+    const queryParams = [];
+    queryParams.push(`price=${this.state.totalPrice}`);
+    // for..in: loop through attributes of object
+    for (let i in this.state.ingredients) {
+      queryParams.push(
+        `${encodeURIComponent(i)}=${encodeURIComponent(
+          this.state.ingredients[i]
+        )}`
+      );
+    }
+    const query = queryParams.join('&');
 
-    axios
-      .post('/order.json', order)
-      .then((res) => {
-        // console.log(res);
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch((err) => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    this.props.history.push({
+      pathname: '/checkout',
+      search: `?${query}`,
+    });
   };
 
   updatePurchaseState(ingredients) {
