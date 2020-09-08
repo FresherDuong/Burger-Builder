@@ -10,7 +10,7 @@ class Checkout extends Component {
   };
 
   componentWillMount() {
-    console.log(this.props);
+    // console.log(this.props);
     const query = new URLSearchParams(this.props.location.search);
     const ingredients = {};
     // The entries() method returns an Array Iterator object with key/value pairs.
