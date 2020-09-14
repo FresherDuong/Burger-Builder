@@ -4,14 +4,23 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from './store/reducer';
 
-// Enable routing in React
+// Reducer is related directly with store
+const store = createStore(reducer);
+
+// Enable routing in React by wrapping <BrowserRouter></BrowserRouter>
+// Enable Redux by wrapping <Provider></Provider>
 ReactDOM.render(
-  <BrowserRouter>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 
