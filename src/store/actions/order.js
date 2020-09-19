@@ -24,11 +24,11 @@ export const purchaseBurgerStart = () => {
 
 // This is middle ware run by thunk(Actually it block action to be called and run some
 // async tasks -- after that --> dispatch action)
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
   return (dispatch) => {
     dispatch(purchaseBurgerStart());
     axios
-      .post('/orders.json', orderData)
+      .post('/orders.json?auth=' + token, orderData)
       .then((res) => {
         dispatch(purchaseBurgerSuccess(res.data.name, orderData));
       })
@@ -64,11 +64,14 @@ export const fetchOrderStart = () => {
   };
 };
 
-export const fetchOrder = () => {
+export const fetchOrder = (token, userId) => {
   return (dispatch) => {
     dispatch(fetchOrderStart());
+    // Query for search, order in Firebase
+    const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+
     axios
-      .get('/orders.json')
+      .get(`/orders.json${queryParams}`)
       .then((res) => {
         const fetchedOrders = [];
         for (let key in res.data) {
