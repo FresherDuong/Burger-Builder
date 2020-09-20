@@ -20,7 +20,10 @@ const rootReducer = combineReducers({
 });
 
 // set up using redux chrome dev tool
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === 'development'
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 // Reducer is related directly with store
 const store = createStore(

@@ -28,7 +28,7 @@ class BurgerBuilder extends Component {
   state = {
     // ingredients: null,
     // totalPrice: 4,
-    purchasable: true,
+    // purchasable: true,
     purchasing: false,
     // loading: false,
     // error: false,
@@ -99,19 +99,19 @@ class BurgerBuilder extends Component {
     this.props.history.push('/checkout');
   };
 
-  updatePurchaseState(ingredients) {
-    // turn object into array and sum
-    // const ingredients = { ...this.state.ingredients };
-    const sum = Object.keys(ingredients)
-      .map((ingKey) => {
-        return ingredients[ingKey];
-      })
-      .reduce((sum, el) => {
-        return sum + el;
-      });
+  // updatePurchaseState(ingredients) {
+  //   // turn object into array and sum
+  //   // const ingredients = { ...this.state.ingredients };
+  //   const sum = Object.keys(ingredients)
+  //     .map((ingKey) => {
+  //       return ingredients[ingKey];
+  //     })
+  //     .reduce((sum, el) => {
+  //       return sum + el;
+  //     });
 
-    this.setState({ purchasable: sum > 0 });
-  }
+  //   this.setState({ purchasable: sum > 0 });
+  // }
 
   // Should write arrow function because "this" in arrow function always point to current
   // location where it was defined. Where as "this" in normal function depends on who call this
@@ -186,7 +186,7 @@ class BurgerBuilder extends Component {
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             disableInfo={disableInfo}
-            purchasable={this.state.purchasable}
+            purchasable={this.props.purchasable}
             price={this.props.price}
             isAuth={this.props.isAuthenticated}
             order={this.purchaseHandler}
@@ -228,6 +228,7 @@ const mapStateToProps = (state) => {
     price: state.burgerBuilder.totalPrice,
     error: state.burgerBuilder.error,
     isAuthenticated: state.auth.token != null,
+    purchasable: state.burgerBuilder.purchasable,
   };
 };
 

@@ -1,5 +1,5 @@
 import * as actionTypes from './../actions/actionTypes';
-import { updateObject } from './../utility';
+import { updateObject } from './../../shared/utility';
 
 // Reducer only run sync task, not perform async here !
 
@@ -8,6 +8,7 @@ const initialState = {
   totalPrice: 4,
   error: false,
   building: false,
+  purchasable: false,
 };
 
 const INGREDIENT_PRICE = {
@@ -17,28 +18,44 @@ const INGREDIENT_PRICE = {
   bacon: 0.7,
 };
 
+const updatePurchaseState = (ingredients) => {
+  // turn object into array and sum
+  // const ingredients = { ...this.state.ingredients };
+  const sum = Object.keys(ingredients)
+    .map((ingKey) => {
+      return ingredients[ingKey];
+    })
+    .reduce((sum, el) => {
+      return sum + el;
+    });
+
+  return sum > 0;
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_INGREDIENT:
+      const updatedIngredients = updateObject(state.ingredients, {
+        [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
+      });
       const updatedProperties = {
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
-        },
+        ingredients: updatedIngredients,
         totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName],
         building: true,
+        purchasable: updatePurchaseState(updatedIngredients),
       };
 
       return updateObject(state, updatedProperties);
 
     case actionTypes.REMOVE_INGREDIENT:
+      const updatedIngs = updateObject(state.ingredients, {
+        [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
+      });
       const updatedProps = {
-        ingredients: {
-          ...state.ingredients,
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
-        },
+        ingredients: updatedIngs,
         totalPrice: state.totalPrice + INGREDIENT_PRICE[action.ingredientName],
         building: true,
+        purchasable: updatePurchaseState(updatedIngs),
       };
 
       return updateObject(state, updatedProps);

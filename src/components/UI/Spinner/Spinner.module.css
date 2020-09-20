@@ -1,9 +1,13 @@
+.Container {
+  width: 100%;
+}
+
 .Loader {
-  display: inline-block;
+  display: block;
   position: relative;
   width: 100px;
   height: 100px;
-  display: flex;
+  margin: 0 auto;
 }
 .Loader div {
   position: absolute;
